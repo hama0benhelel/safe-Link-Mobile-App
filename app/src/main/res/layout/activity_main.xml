@@ -1,19 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:padding="24dp"
+    android:background="@drawable/gradient_background">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        android:gravity="center">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- En-tête avec avatar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginBottom="32dp">
+
+            <!-- Cercle avatar -->
+            <LinearLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/ic_app"
+                android:gravity="center"
+                android:elevation="8dp"
+                >
+
+                <TextView
+                    android:id="@+id/userInitialsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="U"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/welcomeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bienvenue, Utilisateur!"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/userIdText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID: N/A"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:alpha="0.8"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+
+        <!-- Carte principale -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Section informations -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tableau de bord"
+                    android:textColor="#235faf"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#f0f0f0"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Boutons d'action -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/profileButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Voir mon profil"
+                    android:textSize="16sp"
+                    app:icon="@drawable/ic_person"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    android:layout_marginBottom="12dp"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
+
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    android:id="@+id/settingsButton"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="56dp"-->
+<!--                    android:text="Paramètres"-->
+<!--&lt;!&ndash;                    android:textSize="16sp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:icon="@drawable/ic_settings"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:iconGravity="textStart"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:iconPadding="8dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_marginBottom="12dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    style="@style/Widget.Material3.Button.OutlinedButton"&ndash;&gt;-->
+<!--                    >-->
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/refreshButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Actualiser"
+                    android:textSize="16sp"
+                    app:icon="@drawable/ic_login"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                <!-- Progress Bar -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginBottom="16dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Bouton de déconnexion -->
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/logoutButton"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:text="Déconnexion"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:icon="@drawable/ic_logout"-->
+<!--            app:iconGravity="textStart"-->
+<!--            app:iconPadding="8dp"-->
+<!--            android:backgroundTint="#e53948"-->
+<!--            app:cornerRadius="28dp" -->
+<!--        />-->
+
+    </LinearLayout>
+
+</ScrollView>
