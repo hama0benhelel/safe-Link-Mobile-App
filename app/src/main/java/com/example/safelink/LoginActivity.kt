@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.safelink.api.RetrofitClient
@@ -16,9 +15,7 @@ import com.example.safelink.models.SignupRequest
 import com.example.safelink.utils.SharedPreferencesHelper
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -39,110 +36,10 @@ class LoginActivity : AppCompatActivity() {
         // Afficher l'URL utilisée
         Log.d("CONFIG", "🎯 URL du serveur: ${RetrofitClient.getBaseUrl()}")
 
-        // TEST AUTOMATIQUE AU DÉMARRAGE
-        testServerConnection()
-
         setupClickListeners()
     }
 
-    private fun testServerConnection() {
-        updateServerStatus("Test en cours...", "gray")
 
-        lifecycleScope.launch {
-            Log.d("SERVER_TEST", "🔍 Test de connexion serveur...")
-
-            try {
-                val testRequest = AuthRequest("test@test.com", "test123")
-                val response = apiService.login(testRequest)
-
-                when (response.code()) {
-                    200 -> {
-                        Log.d("SERVER_TEST", "✅ Serveur connecté - Code 200")
-                        updateServerStatus("Connecté", "green")
-                        showToast("✅ Serveur connecté!")
-                    }
-                    401 -> {
-                        Log.d("SERVER_TEST", "✅ Serveur accessible - Mauvais identifiants")
-                        updateServerStatus("Accessible", "green")
-                        showToast("✅ Serveur accessible!")
-                    }
-                    403 -> {
-                        Log.e("SERVER_TEST", "❌ Accès refusé - 403 Forbidden")
-                        updateServerStatus("CORS Actif", "red")
-                        showToast("❌ Problème CORS - Vérifiez le serveur")
-                    }
-                    404 -> {
-                        Log.e("SERVER_TEST", "❌ Endpoint non trouvé - 404")
-                        updateServerStatus("URL incorrecte", "red")
-                        showToast("❌ Endpoint non trouvé")
-                    }
-                    500 -> {
-                        Log.e("SERVER_TEST", "❌ Erreur serveur - 500")
-                        updateServerStatus("Erreur serveur", "red")
-                        showToast("❌ Erreur interne du serveur")
-                    }
-                    else -> {
-                        Log.e("SERVER_TEST", "❌ Erreur ${response.code()}")
-                        updateServerStatus("Erreur ${response.code()}", "red")
-                        showToast("❌ Erreur ${response.code()}")
-                    }
-                }
-
-            } catch (e: Exception) {
-                Log.e("SERVER_TEST", "💥 Exception: ${e.javaClass.simpleName} - ${e.message}")
-
-                when (e) {
-                    is java.net.ConnectException -> {
-                        updateServerStatus("Hors ligne", "red")
-                        showToast("❌ Serveur inaccessible")
-                    }
-                    is java.net.SocketTimeoutException -> {
-                        updateServerStatus("Timeout", "red")
-                        showToast("❌ Timeout - Serveur ne répond pas")
-                    }
-                    is java.net.UnknownHostException -> {
-                        updateServerStatus("IP incorrecte", "red")
-                        showToast("❌ IP serveur incorrecte")
-                    }
-                    is javax.net.ssl.SSLHandshakeException -> {
-                        updateServerStatus("SSL Error", "red")
-                        showToast("❌ Erreur SSL")
-                    }
-                    else -> {
-                        updateServerStatus("Erreur connexion", "red")
-                        showToast("❌ Erreur: ${e.message}")
-                    }
-                }
-            }
-        }
-    }
-
-    private fun updateServerStatus(message: String, color: String) {
-        runOnUiThread {
-            binding.serverStatusText.text = "Serveur: $message"
-
-            val colorRes = when (color) {
-                "green" -> android.R.color.holo_green_dark
-                "red" -> android.R.color.holo_red_dark
-                else -> android.R.color.darker_gray
-            }
-
-            binding.serverStatusText.setTextColor(ContextCompat.getColor(this, colorRes))
-
-            // Changer la couleur de l'indicateur
-            val drawableRes = when (color) {
-                "green" -> R.drawable.circle_green
-                "red" -> R.drawable.circle_red
-                else -> R.drawable.circle_gray
-            }
-
-            try {
-                binding.serverStatusIndicator.background = ContextCompat.getDrawable(this, drawableRes)
-            } catch (e: Exception) {
-                Log.e("UI_ERROR", "Erreur chargement drawable: ${e.message}")
-            }
-        }
-    }
 
     private fun setupClickListeners() {
         // Bouton de connexion principal
@@ -153,11 +50,6 @@ class LoginActivity : AppCompatActivity() {
             if (validateInputs(email, password)) {
                 performLogin(email, password)
             }
-        }
-
-        // Bouton TESTER dans le statut serveur
-        binding.testConnectionButton.setOnClickListener {
-            testServerConnection()
         }
 
         // Bouton création compte
@@ -306,7 +198,6 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.isEnabled = !isLoading
         binding.loginButton.text = if (isLoading) "Connexion..." else "Se connecter"
         binding.progressBar.isVisible = isLoading
-        binding.testConnectionButton.isEnabled = !isLoading
         binding.signUpText.isEnabled = !isLoading
         binding.forgotPasswordText.isEnabled = !isLoading
 

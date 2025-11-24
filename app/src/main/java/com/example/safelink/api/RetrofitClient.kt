@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
     // ⚠️ Remplacez par l'IP de votre PC sur le réseau local
     // Pour trouver votre IP: cmd → ipconfig → IPv4
-    private const val BASE_URL = "http://192.168.100.177:5000/api/"
+    private const val BASE_URL = "http://192.168.100.177:5001/api/"
 
     fun getBaseUrl(): String = BASE_URL
 
