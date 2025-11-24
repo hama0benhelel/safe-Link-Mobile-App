@@ -242,42 +242,6 @@ class LoginActivity : AppCompatActivity() {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
-    // Méthode pour tester la création d'utilisateur (optionnel)
-    private fun createTestUser() {
-        lifecycleScope.launch {
-            Log.d("USER_TEST", "👤 Création utilisateur test...")
-
-            val testUser = SignupRequest(
-                name = "Test User",
-                email = "test@test.com",
-                password = "test123"
-            )
-
-            try {
-                val response = apiService.signup(testUser)
-
-                when {
-                    response.isSuccessful -> {
-                        Log.d("USER_TEST", "✅ Utilisateur créé: ${response.body()?.user_id}")
-                        showToast("✅ Utilisateur test créé!")
-                    }
-                    response.code() == 409 -> {
-                        Log.d("USER_TEST", "ℹ️ Utilisateur existe déjà")
-                        showToast("ℹ️ Utilisateur test existe déjà")
-                    }
-                    else -> {
-                        val errorBody = response.errorBody()?.string()
-                        Log.e("USER_TEST", "❌ Erreur création: ${response.code()} - $errorBody")
-                        showToast("❌ Erreur création utilisateur")
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e("USER_TEST", "💥 Erreur: ${e.message}")
-                showToast("❌ Erreur création: ${e.message}")
-            }
-        }
-    }
-
     // Gestion du cycle de vie
     override fun onResume() {
         super.onResume()
