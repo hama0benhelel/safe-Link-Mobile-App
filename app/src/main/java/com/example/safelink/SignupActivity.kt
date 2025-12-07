@@ -1,15 +1,15 @@
 package com.example.safelink
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import androidx.core.view.isVisible
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.safelink.api.RetrofitClient
 import com.example.safelink.databinding.ActivitySignupBinding
-import com.example.safelink.models.AuthRequest
 import com.example.safelink.models.ErrorResponse
 import com.example.safelink.models.SignupRequest
 import com.example.safelink.utils.SharedPreferencesHelper
@@ -106,8 +106,7 @@ class SignupActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val signupResponse = response.body()
                     if (signupResponse != null) {
-                        // Supprimer la vérification de 'success' si elle n'existe pas
-                        handleSignupSuccess(signupResponse, email, password)
+                        handleSignupSuccess(signupResponse)
                     } else {
                         handleSignupError("Réponse vide du serveur")
                     }
@@ -122,42 +121,18 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleSignupSuccess(
-        signupResponse: com.example.safelink.models.SignupResponse,
-        email: String,
-        password: String
-    ) {
+    private fun handleSignupSuccess(signupResponse: com.example.safelink.models.SignupResponse) {
         Log.d("SIGNUP_SUCCESS", "✅ Compte créé: ${signupResponse.message}")
-        showSuccessMessage("Compte créé avec succès! Connexion automatique...")
-        performLoginAfterSignup(email, password)
-    }
 
-    private fun performLoginAfterSignup(email: String, password: String) {
-        lifecycleScope.launch {
-            try {
-                val authRequest = AuthRequest(email, password)
-                val response = apiService.login(authRequest)
+        // Affiche le toast
+        Toast.makeText(this, "Compte créé avec succès !", Toast.LENGTH_SHORT).show()
 
-                if (response.isSuccessful) {
-                    val authResponse = response.body()
-                    if (authResponse != null) {
-                        // Supprimer la vérification de 'success' si elle n'existe pas
-                        authResponse.token?.let { sharedPref.saveAuthToken(it) }
-                        authResponse.user?.let { user ->
-                            sharedPref.saveUserInfo(user.id, user.name)
-                        }
-                        showSuccessMessage("Bienvenue!")
-                        navigateToMainActivity()
-                    } else {
-                        navigateToLogin()
-                    }
-                } else {
-                    navigateToLogin()
-                }
-            } catch (e: Exception) {
-                navigateToLogin()
-            }
-        }
+        // Redirection vers LoginActivity après 1.2 secondes
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, 1200)
     }
 
     private fun handleHttpError(response: retrofit2.Response<*>) {
@@ -204,30 +179,14 @@ class SignupActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         binding.signupButton.isEnabled = !isLoading
         binding.signupButton.text = if (isLoading) "Création..." else "Créer un compte"
-        // Si vous avez une ProgressBar, décommentez la ligne suivante
-        // binding.progressBar.isVisible = isLoading
-    }
-
-    private fun showSuccessMessage(message: String) {
-        runOnUiThread {
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        }
     }
 
     private fun showErrorMessage(message: String) {
-        runOnUiThread {
-            Toast.makeText(this, "Échec: $message", Toast.LENGTH_LONG).show()
-        }
+        Toast.makeText(this, "Échec: $message", Toast.LENGTH_LONG).show()
     }
 
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

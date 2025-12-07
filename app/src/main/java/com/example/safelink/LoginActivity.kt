@@ -195,15 +195,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.loginButton.isEnabled = !isLoading
-        binding.loginButton.text = if (isLoading) "Connexion..." else "Se connecter"
         binding.progressBar.isVisible = isLoading
-        binding.signUpText.isEnabled = !isLoading
-        binding.forgotPasswordText.isEnabled = !isLoading
 
-        // Désactiver les champs pendant le chargement
+        binding.loginButton.isEnabled = !isLoading
         binding.emailEditText.isEnabled = !isLoading
         binding.passwordEditText.isEnabled = !isLoading
+        binding.signUpText.isEnabled = !isLoading
+
+        binding.loginButton.text = if (isLoading) "Connexion..." else "Se connecter"
     }
 
     private fun showSuccessMessage(message: String) {

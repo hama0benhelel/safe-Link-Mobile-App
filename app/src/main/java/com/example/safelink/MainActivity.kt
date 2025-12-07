@@ -1,6 +1,5 @@
 package com.example.safelink
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -14,9 +13,8 @@ import com.example.safelink.databinding.ActivityMainBinding
 import com.example.safelink.utils.SharedPreferencesHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
-
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
