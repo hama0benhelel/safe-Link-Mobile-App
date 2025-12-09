@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Safe Link</string>
+    <string name="scan_quick">Scan Rapide</string>
+    <string name="critice">CRITIQUE</string>
+    <string name="profile_avatar">Profile avatar</string>
+
 </resources>

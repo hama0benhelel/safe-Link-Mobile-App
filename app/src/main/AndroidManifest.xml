@@ -1,45 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.safelink">
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.example.safelink">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_app"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.LoginApp"
-        android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        <application
+            android:name=".SafeLinkApplication"
+            android:allowBackup="true"
+            android:icon="@drawable/ic_app"
+            android:label="@string/app_name"
+            android:theme="@style/Base.Theme.SafeLink"
+            android:supportsRtl="true"
+            android:usesCleartextTraffic="true"
+            tools:targetApi="31">
 
-        <!-- Login Activity -->
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.LoginApp">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            <!-- Login Activity -->
+            <activity
+                android:name=".LoginActivity"
+                android:exported="true"
+                android:windowSoftInputMode="adjustResize"
+                android:theme="@style/Theme.LoginApp">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
 
-        <!-- Signup Activity -->
-        <activity
-            android:name=".SignupActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:theme="@style/Theme.LoginApp" />
+            <!-- Signup Activity -->
+            <activity
+                android:name=".SignupActivity"
+                android:exported="false"
+                android:windowSoftInputMode="adjustResize|stateHidden"
+                android:theme="@style/Theme.LoginApp" />
 
-        <!-- Main Activity -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.LoginApp" />
+            <!-- Main Activity -->
+            <activity
+                android:name=".MainActivity"
+                android:exported="false"
+                android:theme="@style/Theme.LoginApp" />
 
-    </application>
+        </application>
 
-</manifest>
+    </manifest>
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+<!--<manifest xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--package="com.example.safelink">-->
+
+<!--&lt;!&ndash; Permissions nécessaires &ndash;&gt;-->
+<!--<uses-permission android:name="android.permission.INTERNET" />-->
+<!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+<!--<uses-permission android:name="android.permission.VIBRATE" />-->
+<!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->
+
+<!--<application-->
+<!--    android:allowBackup="true"-->
+<!--    android:icon="@drawable/ic_app"-->
+<!--    android:label="@string/app_name"-->
+<!--    android:roundIcon="@drawable/ic_app"-->
+<!--    android:supportsRtl="true"-->
+<!--    android:usesCleartextTraffic="true"-->
+<!--    android:theme="@style/Theme.SafeLink"-->
+<!--    tools:targetApi="34">-->
+
+<!--    Splash / Login Activity (écran de démarrage)-->
+<!--    <activity-->
+<!--        android:name=".LoginActivity"-->
+<!--        android:exported="true"-->
+<!--        android:theme="@style/Theme.LoginApp"-->
+<!--        android:screenOrientation="fullSensor">-->
+<!--        <intent-filter>-->
+<!--            <action android:name="android.intent.action.MAIN" />-->
+<!--            <category android:name="android.intent.category.LAUNCHER" />-->
+<!--        </intent-filter>-->
+<!--    </activity>-->
+
+<!--    &lt;!&ndash; Signup Activity &ndash;&gt;-->
+<!--    <activity-->
+<!--        android:name=".SignupActivity"-->
+<!--        android:exported="false"-->
+<!--        android:parentActivityName=".LoginActivity"-->
+<!--        android:windowSoftInputMode="adjustResize|stateHidden"-->
+<!--        android:theme="@style/Theme.LoginApp" />-->
+
+<!--    Main Activity (avec Bottom Navigation + Fragments)-->
+<!--    <activity-->
+<!--        android:name=".MainActivity"-->
+<!--        android:exported="false"-->
+<!--        android:label="@string/app_name"-->
+<!--        android:theme="@style/Theme.LoginApp"-->
+<!--        android:windowSoftInputMode="adjustResize"-->
+<!--        android:launchMode="singleTop" />-->
+<!--    <activity  />-->
+
+<!--</application>-->
+<!--</manifest>-->

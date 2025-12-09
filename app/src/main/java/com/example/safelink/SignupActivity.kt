@@ -12,7 +12,6 @@ import com.example.safelink.api.RetrofitClient
 import com.example.safelink.databinding.ActivitySignupBinding
 import com.example.safelink.models.ErrorResponse
 import com.example.safelink.models.SignupRequest
-import com.example.safelink.utils.SharedPreferencesHelper
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.launch
@@ -23,7 +22,7 @@ class SignupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupBinding
     private val apiService = RetrofitClient.apiService
-    private lateinit var sharedPref: SharedPreferencesHelper
+
     private val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +30,7 @@ class SignupActivity : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPref = SharedPreferencesHelper(this)
+
         setupClickListeners()
     }
 

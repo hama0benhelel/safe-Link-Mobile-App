@@ -24,4 +24,63 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="Theme.SafeLink1" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorSecondaryDark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/secondary_purple</item>
+
+        <item name="colorOnSecondary">@color/white</item>
+
+
+
+    </style>
+
+    <!-- Filter Chip Style -->
+    <style name="FilterChip" parent="Widget.MaterialComponents.Chip.Filter">
+
+
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipCornerRadius">16dp</item>
+
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="chipIconSize">18dp</item>
+
+    </style>
+
+
+    <style name="ProfileMenuItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="ProfileButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:paddingHorizontal">24dp</item>
+        <item name="android:paddingVertical">14dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- Material Button Style -->
+    <style name="Widget.SafeLink.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:paddingHorizontal">24dp</item>
+        <item name="android:paddingVertical">14dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.SafeLink.Button</item>
+    </style>
+
+    <!-- Text Appearance -->
+    <style name="TextAppearance.SafeLink.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
 </resources>

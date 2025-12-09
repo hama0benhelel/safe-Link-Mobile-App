@@ -11,8 +11,6 @@ import com.example.safelink.api.RetrofitClient
 import com.example.safelink.databinding.ActivityLoginBinding
 import com.example.safelink.models.AuthRequest
 import com.example.safelink.models.ErrorResponse
-import com.example.safelink.models.SignupRequest
-import com.example.safelink.utils.SharedPreferencesHelper
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.launch
@@ -23,7 +21,6 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private val apiService = RetrofitClient.apiService
-    private lateinit var sharedPref: SharedPreferencesHelper
     private val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,15 +28,14 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPref = SharedPreferencesHelper(this)
-
-        // Afficher l'URL utilisée
-        Log.d("CONFIG", "🎯 URL du serveur: ${RetrofitClient.getBaseUrl()}")
+        // Vérifier si l'utilisateur est déjà connecté
+        if (SafeLinkApplication.sessionManager.isLoggedIn()) {
+            navigateToMainActivity()
+            return
+        }
 
         setupClickListeners()
     }
-
-
 
     private fun setupClickListeners() {
         // Bouton de connexion principal
@@ -121,8 +117,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleLoginSuccess(authResponse: com.example.safelink.models.AuthResponse) {
-        sharedPref.saveAuthToken(authResponse.token)
-        sharedPref.saveUserInfo(authResponse.user.id, authResponse.user.name)
+        // Sauvegarder avec SessionManager
+        SafeLinkApplication.sessionManager.saveAuthToken(authResponse.token)
+        SafeLinkApplication.sessionManager.saveUserData(
+            userId = authResponse.user.id,
+            name = authResponse.user.name,
+            email = authResponse.user.email
+        )
 
         Log.d("LOGIN_SUCCESS", "✅ Utilisateur connecté: ${authResponse.user.name}")
         showSuccessMessage("Connexion réussie! Bienvenue ${authResponse.user.name}")
@@ -217,12 +218,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun showToast(message: String) {
-        runOnUiThread {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        }
-    }
-
     private fun showForgotPasswordDialog() {
         Toast.makeText(this, "Fonctionnalité à venir", Toast.LENGTH_SHORT).show()
     }
@@ -230,18 +225,42 @@ class LoginActivity : AppCompatActivity() {
     private fun navigateToSignUp() {
         val intent = Intent(this, SignupActivity::class.java)
         startActivity(intent)
-        // Optionnel: animation
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish() // Fermer LoginActivity pour empêcher le retour
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        try {
+            Log.d("LOGIN_NAV", "🚀 Début navigation vers MainActivity")
+
+            // Vérifier que les données sont bien sauvegardées
+            val token = SafeLinkApplication.sessionManager.getToken()
+            val userId = SafeLinkApplication.sessionManager.getUserId()
+            val userName = SafeLinkApplication.sessionManager.getUserName()
+            val userEmail = SafeLinkApplication.sessionManager.getUserEmail()
+
+            Log.d("LOGIN_NAV", "📦 Token: ${token?.take(20)}...")
+            Log.d("LOGIN_NAV", "📦 UserId: $userId")
+            Log.d("LOGIN_NAV", "📦 UserName: $userName")
+            Log.d("LOGIN_NAV", "📦 UserEmail: $userEmail")
+
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+            Log.d("LOGIN_NAV", "✅ Intent créé, démarrage...")
+            startActivity(intent)
+
+            Log.d("LOGIN_NAV", "✅ startActivity appelé")
+            finish()
+
+            Log.d("LOGIN_NAV", "✅ finish() appelé")
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+
+        } catch (e: Exception) {
+            Log.e("LOGIN_NAV", "💥 ERREUR: ${e.message}", e)
+            Toast.makeText(this, "Erreur navigation: ${e.message}", Toast.LENGTH_LONG).show()
+        }
     }
 
-    // Gestion du cycle de vie
     override fun onResume() {
         super.onResume()
         Log.d("LIFECYCLE", "LoginActivity resumed")
